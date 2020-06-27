@@ -1,7 +1,9 @@
 const express = require("express");
 const { uuid, isUuid } = require("uuidv4")
 const app = express();
+const cors = require("cors")
 
+app.use(cors());
 app.use(express.json())
 
 function logRequests(request, response, next) {
@@ -65,6 +67,8 @@ app.put("/projects/:id", (request, response) => {
 
 app.delete("/projects/:id", (request, response) => {
     const { id } = request.params
+    console.log(request.params)
+    // console.log()
     const projectIndex = projects.findIndex(project => id === project.id)
 
     projects.splice(projectIndex, 1)
@@ -72,6 +76,6 @@ app.delete("/projects/:id", (request, response) => {
     return response.status(204).send()
 })
 
-app.listen(3000, () => {
+app.listen(3333, () => {
     console.log("backend starts")
 })
