@@ -31,6 +31,7 @@ interface Issue {
     login: string;
   }
 }
+
 const Repository: React.FC = () => {
   const { params } = useRouteMatch<RepositoryParams>();
   const [repository, setRepository] = useState<Repository | null>(null);
