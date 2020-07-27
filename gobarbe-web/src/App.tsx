@@ -1,11 +1,13 @@
 import React from 'react';
+import SignIn from "./pages/SignIn";
 import GlobalStyle from './styles/global';
-import './App.css';
+
 
 const App: React.FC = () => (
   <>
-    <h1>oba</h1>
+    <SignIn/>
     <GlobalStyle/>
+
   </>
 )
 
