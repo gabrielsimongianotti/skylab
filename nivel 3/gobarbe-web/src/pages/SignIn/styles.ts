@@ -19,7 +19,7 @@ export const Content = styled.div`
   place-content: center;
 
   width: 100%;
-  max-width: 700px;
+  max-width: 500px;
 
 
 
