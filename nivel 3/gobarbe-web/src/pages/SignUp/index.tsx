@@ -1,7 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiLock, FiMail, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+
+import getValidationErrors from '../../utils/getValidationError';
+
 import LogoImg from '../../assets/logo.svg';
 
 import Input from '../../components/Input';
@@ -10,6 +14,8 @@ import Button from '../../components/Button';
 import { Container, Content, Background } from './styles';
 
 const SignUp: React.FC = () => {
+  const fromRef = useRef<FormHandles>(null);
+
   const handleSubmit = useCallback(async (data: object) => {
     try {
       const schama = Yup.object().shape({
@@ -18,9 +24,11 @@ const SignUp: React.FC = () => {
         password: Yup.string().min(6, 'No mínimo  6 digitos')
       });
 
-      await schama.validate(data, { abortEarly: true })
+      await schama.validate(data, { abortEarly: false })
     } catch (err) {
-      console.log(err)
+      const errors = getValidationErrors(err);
+
+      fromRef.current?.setErrors(errors);
     }
     console.log(data)
   }, [])
@@ -31,7 +39,11 @@ const SignUp: React.FC = () => {
       <Content>
         <img src={LogoImg} alt="Gobarber" />
 
-        <Form initialData={{ name: "gabriel", email: "gabrielgianotti@gmail.com", password: "12345678" }} onSubmit={handleSubmit}>
+        <Form
+          ref={fromRef}
+          // initialData={{ name: "gabriel", email: "gabrielgianotti@gmail.com", password: "12345678" }}
+          onSubmit={handleSubmit}
+        >
           <h1>Faça seu cadastro</h1>
           <Input name="name" icon={FiUser} placeholder="Nome" />
           <Input name="email" icon={FiMail} placeholder="E-mail" />
