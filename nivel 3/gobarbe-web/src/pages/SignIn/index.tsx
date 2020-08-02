@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useContext } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FiLogIn, FiLock, FiMail } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
@@ -9,7 +9,7 @@ import logoImg from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import getValidationErrors from '../../utils/getValidationError';
-import { AuthContext } from '../../context/AutoContext';
+import { useAuth } from '../../hooks/AutoContext';
 
 import { Container, Content, Background } from './styles';
 
@@ -20,7 +20,7 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const fromRef = useRef<FormHandles>(null);
 
-  const { user, signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
 
   const handleSubmit = useCallback(async (data: SignInFormData) => {
     try {
@@ -47,8 +47,8 @@ const SignIn: React.FC = () => {
       <Content>
         <img src={logoImg} alt="Gobarber" />
         <Form ref={fromRef}
-        initialData={{ email: "gabrielgianotti@outlook.com", password: "1234567" }}
-         onSubmit={handleSubmit}>
+          initialData={{ email: "gabrielgianotti@outlook.com", password: "1234567" }}
+          onSubmit={handleSubmit}>
           <h1>Faça seu login</h1>
 
           <Input name="email" icon={FiMail} placeholder="E-mail" />

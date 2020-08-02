@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import api from '../services/api';
 
 interface SingInCredentials {
@@ -9,14 +9,15 @@ interface SingInCredentials {
 interface AutoContextData {
   user: object;
   signIn(credentials: SingInCredentials): Promise<void>;
+  signOut(): void;
 }
 
-interface AutoState {
+interface AuthState {
   token: string;
   user: object;
 }
 
-export const AuthContext = createContext<AutoContextData>({} as AutoContextData);
+const AuthContext = createContext<AutoContextData>({} as AutoContextData);
 
 export const AutoProvider: React.FC = ({ children }) => {
   const [data, setData] = useState(() => {
@@ -27,12 +28,12 @@ export const AutoProvider: React.FC = ({ children }) => {
       return { token, user: JSON.parse(user) }
     }
 
-    return {} as AutoState;
+    return {} as AuthState;
   })
 
   const signIn = useCallback(async ({ email, password }) => {
 
-    const response = await api.post<AutoState>('sessions', { email, password });
+    const response = await api.post<AuthState>('sessions', { email, password });
 
     const { user, token } = response.data;
 
@@ -42,9 +43,25 @@ export const AutoProvider: React.FC = ({ children }) => {
     setData({ token, user })
   }, []);
 
+  const signOut = useCallback(() => {
+    localStorage.removeItem('@GoBarber:token');
+    localStorage.removeItem('@GoBarber:user');
+    setData({} as AuthState);
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuth(): AutoContextData {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useAuto must be used withid an AutoProvider')
+  }
+
+  return context;
 }
