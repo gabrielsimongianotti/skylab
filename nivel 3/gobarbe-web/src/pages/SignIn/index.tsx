@@ -20,7 +20,7 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const fromRef = useRef<FormHandles>(null);
 
-  const { signIn } = useContext(AuthContext);
+  const { user, signIn } = useContext(AuthContext);
 
   const handleSubmit = useCallback(async (data: SignInFormData) => {
     try {
@@ -39,7 +39,7 @@ const SignIn: React.FC = () => {
 
       fromRef.current?.setErrors(errors);
     }
-    console.log(data)
+
   }, [signIn]);
 
   return (
