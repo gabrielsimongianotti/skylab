@@ -30,7 +30,6 @@ const SignUp: React.FC = () => {
 
       fromRef.current?.setErrors(errors);
     }
-    console.log(data)
   }, [])
 
   return (
