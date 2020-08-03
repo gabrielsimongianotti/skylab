@@ -9,7 +9,9 @@ import logoImg from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import getValidationErrors from '../../utils/getValidationError';
-import { useAuth } from '../../hooks/AutoContext';
+
+import { useAuth } from '../../hooks/auto';
+import { useToast } from '../../hooks/toast';
 
 import { Container, Content, Background } from './styles';
 
@@ -21,7 +23,7 @@ const SignIn: React.FC = () => {
   const fromRef = useRef<FormHandles>(null);
 
   const { signIn } = useAuth();
-
+  const {addToast} = useToast();
   const handleSubmit = useCallback(async (data: SignInFormData) => {
     try {
       const schama = Yup.object().shape({
@@ -30,7 +32,7 @@ const SignIn: React.FC = () => {
       });
 
       await schama.validate(data, { abortEarly: false })
-      signIn({
+      await signIn({
         email: data.email,
         password: data.password,
       })
@@ -40,9 +42,10 @@ const SignIn: React.FC = () => {
 
         fromRef.current?.setErrors(errors);
       }
+      addToast();
     }
 
-  }, [signIn]);
+  }, [signIn,addToast]);
 
   return (
     <Container>
