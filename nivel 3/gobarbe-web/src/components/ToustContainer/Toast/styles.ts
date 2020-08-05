@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-
+import { animated } from 'react-spring';
 interface ToastProps {
   type?: 'success' | 'error' | 'info';
   hasDescription: boolean
@@ -20,7 +20,7 @@ const toastTypeVariations = {
   `
 }
 
-export const Container = styled.div<ToastProps>`
+export const Container = styled(animated.div)<ToastProps>`
   width: 360px;
 
   position: relative;
@@ -63,7 +63,7 @@ export const Container = styled.div<ToastProps>`
     color: inherit;
   }
 
-  ${ props =>!props.hasDescription && css`
+  ${ props => !props.hasDescription && css`
     align-items: center;
 
     svg{
