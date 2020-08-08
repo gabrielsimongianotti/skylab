@@ -3,8 +3,9 @@ import { FiArrowLeft, FiLock, FiMail, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
+import { useToast } from '../../hooks/toast'
 import getValidationErrors from '../../utils/getValidationError';
 
 import LogoImg from '../../assets/logo.svg';
@@ -14,10 +15,18 @@ import Button from '../../components/Button';
 
 import { Container, Content, AnimationContainer, Background } from './styles';
 
+import api from '../../services/api';
+
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+}
 const SignUp: React.FC = () => {
   const fromRef = useRef<FormHandles>(null);
-
-  const handleSubmit = useCallback(async (data: object) => {
+  const { addToast } = useToast();
+  const history = useHistory();
+  const handleSubmit = useCallback(async (data: SignUpFormData) => {
     try {
       const schama = Yup.object().shape({
         name: Yup.string().required('Nome obrigatorio'),
@@ -26,12 +35,27 @@ const SignUp: React.FC = () => {
       });
 
       await schama.validate(data, { abortEarly: false })
+
+      await api.post('/users', data);
+
+      addToast({
+        type:'success',
+        title:'Cadastro realizado',
+        description:'faça login',
+      });
+      history.push('/')
+
     } catch (err) {
       const errors = getValidationErrors(err);
 
       fromRef.current?.setErrors(errors);
+      addToast({
+        type:'error',
+        title:'Erro no cadastro',
+        description:'o q sera',
+      });
     }
-  }, [])
+  }, [addToast,history],)
 
   return (
     <Container>
