@@ -1,10 +1,13 @@
-import React, { useRef } from 'react';
-import { Image, View, KeyboardAvoidingView, ScrollView, Platform, TextInput } from 'react-native';
+import React, { useRef, useCallback } from 'react';
+import { Image, View, KeyboardAvoidingView, ScrollView, Platform, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
 import Icon from 'react-native-vector-icons/Feather';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import * as Yup from "yup";
+
+import getValidationErrors from '../../utils/getValidationError';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -16,6 +19,31 @@ const SignUp: React.FC = () => {
 
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
+
+  interface SignUpFormData {
+    email: string;
+    password: string;
+  }
+
+  const handleSignUp = useCallback(async (data: SignUpFormData) => {
+    try {
+      const schama = Yup.object().shape({
+        name: Yup.string().required('Nome obrigatorio'),
+        email: Yup.string().required('Email obrigatorio').email('Digite um email valido'),
+        password: Yup.string().min(6, 'No mínimo  6 digitos')
+      });
+
+      await schama.validate(data, { abortEarly: false })
+
+    } catch (err) {
+      const errors = getValidationErrors(err);
+
+      formRef.current?.setErrors(errors);
+
+      Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, cheque as credenciais.')
+    }
+  }, [])
+
 
   return (
     <>
@@ -33,7 +61,7 @@ const SignUp: React.FC = () => {
             <View>
               <Title>Crie sua conta</Title>
             </View>
-            <Form ref={formRef} onSubmit={() => { }}>
+            <Form ref={formRef} onSubmit={handleSignUp}>
               <Input
                 autoCapitalize="words"
                 returnKeyType='next'
@@ -63,14 +91,14 @@ const SignUp: React.FC = () => {
                 ref={passwordInputRef}
                 secureTextEntry
                 returnKeyType='send'
-                onSubmitEditing={() => { formRef.current?.submitForm }}
+                onSubmitEditing={() => { formRef.current?.submitForm() }}
                 name='password'
                 icon='lock'
                 placeholder='Senha'
               />
 
             </Form>
-            <Button onPress={() => { formRef.current?.submitForm }}>Entrar</Button>
+            <Button onPress={() => { formRef.current?.submitForm() }}>Entrar</Button>
           </Container>
         </ScrollView>
         <BackToSignIn onPress={() => { goBack() }}>
