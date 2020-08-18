@@ -8,6 +8,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from "yup";
 
 import getValidationErrors from '../../utils/getValidationError';
+import api from '../../server/api';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -35,6 +36,10 @@ const SignUp: React.FC = () => {
 
       await schama.validate(data, { abortEarly: false })
 
+      api.post('/data',data);
+      goBack();
+
+      Alert.alert("cadastrado com sucesso!","Você ja pode fazer login na aplicação")
     } catch (err) {
       const errors = getValidationErrors(err);
 
@@ -101,7 +106,7 @@ const SignUp: React.FC = () => {
             <Button onPress={() => { formRef.current?.submitForm() }}>Entrar</Button>
           </Container>
         </ScrollView>
-        <BackToSignIn onPress={() => { goBack() }}>
+        <BackToSignIn onPress={() => { formRef.current?.submitForm() }}>
 
           <Icon name='arrow-left' size={20} color="#fff" />
 
