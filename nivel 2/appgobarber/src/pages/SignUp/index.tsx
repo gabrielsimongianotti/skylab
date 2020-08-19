@@ -8,7 +8,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from "yup";
 
 import getValidationErrors from '../../utils/getValidationError';
-import api from '../../server/api';
+import api from '../../services/api';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -47,7 +47,7 @@ const SignUp: React.FC = () => {
 
       Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, cheque as credenciais.')
     }
-  }, [])
+  }, [goBack])
 
 
   return (
