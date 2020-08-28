@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import UsersController from '../../controller/SessionsController';
+import SessionsController from '../../controller/SessionsController';
 
 const sessionsRouter = Router();
-const usersController = new UsersController();
-// Rota POST
-sessionsRouter.post('/', usersController.create);
+const sessionsController = new SessionsController();
+
+sessionsRouter.post('/', sessionsController.create);
 
 export default sessionsRouter;
