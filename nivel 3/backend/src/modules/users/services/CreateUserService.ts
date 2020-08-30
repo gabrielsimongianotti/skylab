@@ -1,9 +1,9 @@
 import { hash } from 'bcryptjs';
-import { inject, injectable } from "tsyringe";
+import { inject, injectable } from 'tsyringe';
 
 import IUser from '@modules/users/infra/typeorm/entities/Users';
 import AppError from '@shared/erros/AppError';
-import IUsersRepository from "../repositories/IUsersRepository";
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequestDTO {
   name: string;
@@ -13,10 +13,11 @@ interface IRequestDTO {
 
 @injectable()
 class CreateUserService {
-  constructor(@inject('UsersRepository') private usersRepository: IUsersRepository) { }
+  constructor(
+    @inject('UsersRepository') private usersRepository: IUsersRepository,
+  ) {}
 
   public async execute({ name, email, password }: IRequestDTO): Promise<IUser> {
-
     const checkSameEmail = await this.usersRepository.findByEmail(email);
 
     if (checkSameEmail) {
