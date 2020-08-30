@@ -1,4 +1,4 @@
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import CreateAppointmentService from './CreateAppointmentService';
 
 describe('CreateAppointment', () => {
