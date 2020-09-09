@@ -1,6 +1,4 @@
 import { inject, injectable } from 'tsyringe';
-
-// import IUser from '@modules/users/infra/typeorm/entities/Users';
 import IMailProvider from '@shared/container/provider/EmailProvider/models/IEmailProvider';
 import AppError from '@shared/erros/AppError';
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -11,7 +9,7 @@ interface IRequestDTO {
 }
 
 @injectable()
-class CreateUserService {
+class SendForgotPasswordEmailService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -34,4 +32,4 @@ class CreateUserService {
   }
 }
 
-export default CreateUserService;
+export default SendForgotPasswordEmailService;
