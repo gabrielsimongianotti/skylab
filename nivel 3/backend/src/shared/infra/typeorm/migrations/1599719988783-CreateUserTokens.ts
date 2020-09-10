@@ -37,7 +37,8 @@ export default class CreateUserTokens1599719988783
             columnNames: ['user_id'],
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
-          }]
+          },
+        ],
       }),
     );
   }
