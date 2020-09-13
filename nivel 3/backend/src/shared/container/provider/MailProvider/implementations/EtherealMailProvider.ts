@@ -20,11 +20,12 @@ export default class EtherealEmailProvider implements IMailProvider {
   }
 
   public async sendMail(to: string, body: string): Promise<void> {
-    await this.client.sendMail({
+    const message = await this.client.sendMail({
       from: '"Fred Foo 👻" <foo@example.com>', // sender address
       to, // list of receivers
       subject: 'recuperação de senha', // Subject line
       text: body, // plain text body
     });
+    console.log(message);
   }
 }

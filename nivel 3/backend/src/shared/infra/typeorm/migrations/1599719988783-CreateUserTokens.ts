@@ -28,6 +28,16 @@ export default class CreateUserTokens1599719988783
             generationStrategy: 'uuid',
             default: 'uuid_generate_v4()',
           },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
         ],
         foreignKeys: [
           {
