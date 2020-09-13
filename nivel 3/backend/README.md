@@ -81,5 +81,3 @@ As requisições aceitas são:
 	"password": "123456"
 }
 ```
-
-https://github.com/thiagocdn/aulas-bootcamp-GoStack11-rocketseat
