@@ -1,4 +1,5 @@
 import { inject, injectable } from 'tsyringe';
+import path from 'path';
 
 import IMailProvider from '@shared/container/provider/MailProvider/models/IEmailProvider';
 import AppError from '@shared/erros/AppError';
@@ -20,7 +21,7 @@ class SendForgotPasswordEmailService {
 
     @inject('UsersTokenRepository')
     private usersTokenRepository: IUsersTokenRepository,
-  ) {}
+  ) { }
 
   public async execute({ email }: IRequestDTO): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
@@ -29,6 +30,12 @@ class SendForgotPasswordEmailService {
 
     const { token } = await this.usersTokenRepository.generate(user.id);
 
+    const forgotPasswordTemplate = await path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'forgot_password.hbs',
+    );
     await this.mailProvider.sendMail({
       to: {
         name: user.name,
@@ -36,10 +43,10 @@ class SendForgotPasswordEmailService {
       },
       subject: '[GoBarber] Recuperação de senha',
       templateData: {
-        template: 'Olá, {{name}}:{{token}}',
+        file: forgotPasswordTemplate,
         variables: {
           name: user.name,
-          token,
+          link: `http://localhost:3000/reset_password?token=${token}`,
         },
       },
     });
