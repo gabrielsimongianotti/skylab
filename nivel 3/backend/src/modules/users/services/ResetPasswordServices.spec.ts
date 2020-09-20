@@ -1,6 +1,5 @@
-// import AppError from '@shared/erros/AppError';
-
 import AppError from '@shared/erros/AppError';
+
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeUsersTokensRepository from '../repositories/fakes/FakeUsersTokenRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
