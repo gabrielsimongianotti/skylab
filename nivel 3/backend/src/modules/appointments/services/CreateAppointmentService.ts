@@ -25,7 +25,6 @@ class CreateAppointmentService {
   }: IRequestDTO): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
-
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
     );
@@ -44,9 +43,10 @@ class CreateAppointmentService {
 
     if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
       throw new AppError(
-        'You can only create appointments between 8am and  5 pm',
+        `You can only create appointments between 8am and  5pm ${appointmentDate}`,
       );
     }
+
     const appointment = await this.appointmentsRepository.create({
       provider_id,
       user_id,
