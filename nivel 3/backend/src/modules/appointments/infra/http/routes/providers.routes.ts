@@ -14,13 +14,15 @@ const prvidersRouter = Router();
 prvidersRouter.use(ensureAuthenticated);
 
 prvidersRouter.get('/', providersCotroller.index);
+
 prvidersRouter.get(
   '/:provider_id/month-availability',
-  providerMonthAvailabilityController.create,
+  providerMonthAvailabilityController.index,
 );
+
 prvidersRouter.get(
   '/:provider_id/day-availability',
-  providerDayAvailabilityController.create,
+  providerDayAvailabilityController.index,
 );
 
 export default prvidersRouter;
