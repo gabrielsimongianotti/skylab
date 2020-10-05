@@ -43,10 +43,7 @@ export default class AuthenticateUserService {
       throw new AppError('Email/Password does not match.', 401);
     }
 
-    const {
-      secret,
-      expiresIn,
-    }: { secret: string; expiresIn: string } = authConfig.jwt;
+    const { secret, expiresIn } = authConfig.jwt;
 
     const token = sign({}, secret, {
       subject: user.id,
