@@ -20,7 +20,7 @@ class ListProviderAppointmentsService {
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvicer,
-  ) { }
+  ) {}
 
   public async execute({
     provider_id,
@@ -29,8 +29,6 @@ class ListProviderAppointmentsService {
     day,
   }: IRequestDTO): Promise<Appointment[]> {
     const cacheData = await this.cacheProvider.recover('s');
-
-    console.log(cacheData);
 
     const appointments = this.appointmentsRepository.findAllInDayFromProvider({
       provider_id,
