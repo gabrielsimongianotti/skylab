@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import IUser from '@modules/users/infra/typeorm/entities/Users';
 import AppError from '@shared/erros/AppError';
 import IHashProvider from '@modules/users/providers/HashProvider/implementations/BCryptHashProvider';
-import ICacheProvider from '@shared/container/provider/CacheProvider/models/ICacheProvider'
+import ICacheProvider from '@shared/container/provider/CacheProvider/models/ICacheProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequestDTO {
