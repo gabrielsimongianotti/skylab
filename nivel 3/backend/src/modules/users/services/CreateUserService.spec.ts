@@ -1,39 +1,48 @@
 import AppError from '@shared/erros/AppError';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+
+import FakeCacheProvider from '@shared/container/provider/CacheProvider/fakes/FakeCacheProvider';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import CreateUserService from './CreateUserService';
 
-let fakeUserRepository: FakeUsersRepository;
+let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let createUser: CreateUserService;
 
-describe('Create user', () => {
+describe('CreateUser', () => {
   beforeEach(() => {
-    fakeUserRepository = new FakeUsersRepository();
+    fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    createUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+    fakeCacheProvider = new FakeCacheProvider();
+    createUser = new CreateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+      fakeCacheProvider,
+    );
   });
-  it('should be able to createa new appointment', async () => {
+
+  it('should be able to create a new user', async () => {
     const user = await createUser.execute({
-      name: 'gatao',
-      email: 'gatao@gmail.com',
-      password: '1234567',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123456',
     });
 
     expect(user).toHaveProperty('id');
   });
 
-  it('should not be able to createa two user on the same email', async () => {
+  it('should not be able to create a new user with same email from another', async () => {
     await createUser.execute({
-      name: 'gatao',
-      email: 'gatao@gmail.com',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
       password: '1234567',
     });
 
     await expect(
       createUser.execute({
-        name: 'gatao',
-        email: 'gatao@gmail.com',
+        name: 'John Doe',
+        email: 'johndoe@example.com',
         password: '1234567',
       }),
     ).rejects.toBeInstanceOf(AppError);
