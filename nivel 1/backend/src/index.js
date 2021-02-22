@@ -1,5 +1,5 @@
 const express = require("express");
-const { uuid, isUuid } = require("uuidv4")
+const { uuid, isUuid } = require("v4")
 const app = express();
 const cors = require("cors")
 
@@ -58,6 +58,7 @@ app.put("/projects/:id", (request, response) => {
         title,
         owner
     }
+
     console.log(projectIndex, project)
 
     projects[projectIndex] = project
@@ -66,9 +67,8 @@ app.put("/projects/:id", (request, response) => {
 })
 
 app.delete("/projects/:id", (request, response) => {
-    const { id } = request.params
-    console.log(request.params)
-    // console.log()
+    const { id } = request.params;
+
     const projectIndex = projects.findIndex(project => id === project.id)
 
     projects.splice(projectIndex, 1)
